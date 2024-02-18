@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 //#456856
 //rgb(255, 26, 99)
@@ -42,11 +42,14 @@ export function Colorpicker() {
   function generateRGB() {
     let resultRgb = [];
     for (let i = 0; i < 3; i++) {
-      resultRgb.push(randomColorUtility(255));
+      resultRgb.push(randomColorUtility(256));
     }
-
     setColor(`rgb(${resultRgb.join(",")})`);
   }
+
+  useEffect(() => {
+    colorType === "hex" ? generateHex() : generateRGB();
+  }, [colorType]);
 
   return (
     <div style={{ width: "100vw", height: "100vh", backgroundColor: color }}>
@@ -69,13 +72,18 @@ export function Colorpicker() {
       </div>
       <div
         style={{
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
           color: "#000000",
           alignSelf: "center",
-          fontSize: "100px",
+          fontSize: "50px",
           fontWeight: "bold",
         }}
       >
-        {color}
+        <h3>{colorType === "hex" ? "HEX" : "RGB color"}</h3>
+        <h1>{color}</h1>
       </div>
     </div>
   );
